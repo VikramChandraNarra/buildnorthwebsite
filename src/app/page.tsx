@@ -75,9 +75,9 @@ export default function Home() {
         {/* The Problem Section */}
         <section className="min-h-screen flex items-center justify-center px-4 py-20">
                       <div className="max-w-6xl mx-auto text-center">
-              <h2 className="text-4xl md:text-6xl font-black text-white mb-16 drop-shadow-2xl">
-                Canada Has <span className="text-transparent bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text">Incredible Talent</span>
-              </h2>
+                          <h2 className="text-4xl md:text-6xl font-black text-white mb-16 drop-shadow-2xl">
+              Canada Has <span className="text-white">Incredible Talent</span>
+            </h2>
               
               <div className="grid md:grid-cols-2 gap-16 mt-16">
                 <div className="text-left">
@@ -146,10 +146,10 @@ export default function Home() {
         </section>
 
         {/* The Vision Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900/80 to-indigo-900/80 backdrop-blur-sm">
+        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-black/30 backdrop-blur-sm">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-black text-white mb-12 drop-shadow-2xl">
-              What If We Had <span className="text-transparent bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text">Permission to Build</span>?
+              What If We Had <span className="text-white">Permission to Build</span>?
             </h2>
             
             <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light leading-relaxed mb-16">
@@ -168,7 +168,7 @@ export default function Home() {
         <section className="min-h-screen flex items-center justify-center px-4 py-20">
                       <div className="max-w-7xl mx-auto">
               <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-20 drop-shadow-2xl">
-                Our <span className="text-transparent bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text">Values</span>
+                Our <span className="text-white">Values</span>
               </h2>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -240,10 +240,10 @@ export default function Home() {
         </section>
 
         {/* Initiatives Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-gradient-to-br from-indigo-900/80 to-blue-900/80 backdrop-blur-sm">
+        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-black/30 backdrop-blur-sm">
                       <div className="max-w-7xl mx-auto">
               <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-20 drop-shadow-2xl">
-                Our <span className="text-transparent bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text">Initiatives</span>
+                Our <span className="text-white">Initiatives</span>
               </h2>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -306,32 +306,32 @@ export default function Home() {
 
         {/* Join the Movement Section */}
         <section className="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-          </div>
+                      {/* Animated Background Elements */}
+            <div className="absolute inset-0">
+              <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute bottom-20 right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+            </div>
           
           <div className="max-w-5xl mx-auto text-center relative z-10">
             {/* Main Title with Enhanced Styling */}
             <div className="mb-16">
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none">
-                Join the{" "}
-                <span className="text-transparent bg-gradient-to-r from-green-400 via-blue-500 to-indigo-600 bg-clip-text animate-pulse">
-                  Movement
-                </span>
-              </h2>
+                          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none">
+              Join the{" "}
+              <span className="text-white animate-pulse">
+                Movement
+              </span>
+            </h2>
               
               {/* Animated Underline */}
-              <div className="w-32 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto rounded-full animate-pulse"></div>
+              <div className="w-32 h-1 bg-white mx-auto rounded-full animate-pulse"></div>
             </div>
             
             {/* Enhanced Subtitle */}
             <div className="mb-16">
               <p className="text-2xl md:text-3xl lg:text-4xl text-white/95 font-light leading-relaxed mb-8">
                 Canada can become the{" "}
-                <span className="font-bold text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text">
+                <span className="font-bold text-white">
                   best place in the world
                 </span>{" "}
                 to be a young builder.
@@ -339,7 +339,7 @@ export default function Home() {
               
               <p className="text-xl md:text-2xl text-white/80 font-medium">
                 The question is,{" "}
-                <span className="text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text font-bold">
+                <span className="text-white font-bold">
                   will you be a part of this change?
                 </span>
               </p>
@@ -348,14 +348,14 @@ export default function Home() {
             {/* Enhanced Waitlist Form */}
             <div className="max-w-xl mx-auto mb-12">
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="absolute inset-0 bg-white/10 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative flex gap-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-full p-2">
                   <input 
                     type="email" 
                     placeholder="Enter your email to join the waitlist"
                     className="flex-1 px-6 py-4 bg-transparent border-none text-white placeholder-white/60 font-medium text-lg transition-all duration-300 focus:outline-none"
                   />
-                  <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30 flex items-center gap-2 whitespace-nowrap group-hover:from-blue-600 group-hover:to-indigo-700">
+                  <button className="px-8 py-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:scale-105 hover:bg-white/30 hover:shadow-lg hover:shadow-white/20 flex items-center gap-2 whitespace-nowrap">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
@@ -372,11 +372,11 @@ export default function Home() {
             {/* Social Proof Element */}
             <div className="flex justify-center items-center gap-8 text-white/60 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 <span>Join 500+ builders</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-500"></div>
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse delay-500"></div>
                 <span>Launching soon</span>
               </div>
             </div>
