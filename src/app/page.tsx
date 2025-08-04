@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 // Tooltip component for hover definitions
-const Tooltip = ({ children, definition, isVisible, position }: { 
-  children: React.ReactNode; 
+const Tooltip = ({ definition, isVisible, position }: { 
   definition: string; 
   isVisible: boolean; 
   position: { x: number; y: number; }
@@ -152,9 +151,9 @@ export default function Home() {
                 <p>
                   What happens when you land in <UnderlinedTerm definition="The epicenter of tech innovation, where ambitious students feel they can build the next big thing. Home to Y Combinator, where Dropbox, Airbnb, and Stripe got their start">San Francisco</UnderlinedTerm>?
                 </p>
-                <p>
-                  You feel limitless. Like you could build the next <UnderlinedTerm definition="Founded by Ilya Sutskever (UofT grad) and Sam Altman. Their breakthrough came from a 2017 paper published at UofT that introduced the transformer architecture">OpenAI</UnderlinedTerm>, <UnderlinedTerm definition="Started by Jeff Bezos in his garage. Now worth $1.7T. Shows how a simple idea can become a global empire">Amazon</UnderlinedTerm>, or <UnderlinedTerm definition="Founded by Larry Page and Sergey Brin at Stanford. Their first office was a garage. Now they're building AI that can reason like humans">Google</UnderlinedTerm> — even as a student. That feeling changes everything.
-                </p>
+                                  <p>
+                    You feel limitless. Like you could build the next <UnderlinedTerm definition="Founded by Ilya Sutskever (UofT grad) and Sam Altman. Their breakthrough came from a 2017 paper published at UofT that introduced the transformer architecture">OpenAI</UnderlinedTerm>, <UnderlinedTerm definition="Started by Jeff Bezos in his garage. Now worth $1.7T. Shows how a simple idea can become a global empire">Amazon</UnderlinedTerm>, or <UnderlinedTerm definition="Founded by Larry Page and Sergey Brin at Stanford. Their first office was a garage. Now they&apos;re building AI that can reason like humans">Google</UnderlinedTerm> — even as a student. That feeling changes everything.
+                  </p>
                 <p>
                   We want to bring that feeling to <UnderlinedTerm definition="Home to Geoffrey Hinton (UofT), who pioneered deep learning. Waterloo has the world's largest co-op program. Canadian students have built companies like Opennote (YC-backed)">Canada</UnderlinedTerm>.
                 </p>
@@ -162,10 +161,10 @@ export default function Home() {
                 <div className="mt-12">
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Mission</h3>
                   <p>
-                    To give Canadian students <UnderlinedTerm definition="The cultural freedom to try, fail, and build without fear of judgment. In SF, failure is celebrated as learning. In Canada, we're taught to play it safe">cultural permission</UnderlinedTerm> to build.
+                    To give Canadian students <UnderlinedTerm definition="The cultural freedom to try, fail, and build without fear of judgment. In SF, failure is celebrated as learning. In Canada, we&apos;re taught to play it safe">cultural permission</UnderlinedTerm> to build.
                   </p>
                   <p>
-                    To make building feel <UnderlinedTerm definition="Creating something new and meaningful. The rush of shipping your first feature and seeing users actually use it">exciting</UnderlinedTerm>, <UnderlinedTerm definition="Respected and admired by peers. In SF, being a founder is cool. In Canada, we're taught to be humble">high-status</UnderlinedTerm>, and <UnderlinedTerm definition="Spreads from person to person like a positive virus. When you see your friends building, you want to build too">contagious</UnderlinedTerm>. We believe in:
+                    To make building feel <UnderlinedTerm definition="Creating something new and meaningful. The rush of shipping your first feature and seeing users actually use it">exciting</UnderlinedTerm>, <UnderlinedTerm definition="Respected and admired by peers. In SF, being a founder is cool. In Canada, we&apos;re taught to be humble">high-status</UnderlinedTerm>, and <UnderlinedTerm definition="Spreads from person to person like a positive virus. When you see your friends building, you want to build too">contagious</UnderlinedTerm>. We believe in:
                   </p>
                   
                   <div className="grid md:grid-cols-3 gap-8 mt-8">
@@ -225,7 +224,7 @@ export default function Home() {
                   <div className="space-y-4 mt-6">
                     <div className="flex items-start">
                       <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
-                      <p>It's normal to say, "I'm building the next <UnderlinedTerm definition="Founded by Tobi Lütke in Ottawa. Started as a snowboard shop website. Now worth $100B+. Shows Canadian founders can build global companies">Shopify</UnderlinedTerm>."</p>
+                      <p>It&apos;s normal to say, &quot;I&apos;m building the next <UnderlinedTerm definition="Founded by Tobi Lütke in Ottawa. Started as a snowboard shop website. Now worth $100B+. Shows Canadian founders can build global companies">Shopify</UnderlinedTerm>.&quot;</p>
                     </div>
                     <div className="flex items-start">
                       <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
@@ -233,11 +232,11 @@ export default function Home() {
                     </div>
                     <div className="flex items-start">
                       <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
-                      <p><UnderlinedTerm definition="When things don't work out as planned. Instagram's founders had 14 failed apps before Instagram. Failure is just iteration">Failure</UnderlinedTerm> is something to laugh about, not hide.</p>
+                      <p><UnderlinedTerm definition="When things don&apos;t work out as planned. Instagram&apos;s founders had 14 failed apps before Instagram. Failure is just iteration">Failure</UnderlinedTerm> is something to laugh about, not hide.</p>
                     </div>
                     <div className="flex items-start">
                       <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
-                      <p><UnderlinedTerm definition="Someone who creates and builds things. Like the students who built Facebook in their dorm room, or the team that built Instagram in 8 weeks">Building</UnderlinedTerm> is a <UnderlinedTerm definition="How you see yourself and how others see you. In SF, 'I'm building something' is a normal answer to 'what do you do?'">social identity</UnderlinedTerm>, not a job title.</p>
+                      <p><UnderlinedTerm definition="Someone who creates and builds things. Like the students who built Facebook in their dorm room, or the team that built Instagram in 8 weeks">Building</UnderlinedTerm> is a <UnderlinedTerm definition="How you see yourself and how others see you. In SF, &apos;I&apos;m building something&apos; is a normal answer to &apos;what do you do?&apos;">social identity</UnderlinedTerm>, not a job title.</p>
                     </div>
                   </div>
                 </div>
@@ -245,7 +244,7 @@ export default function Home() {
                 <div className="mt-12">
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">This Isn't a Club</h3>
                   <p>
-                    This isn't <UnderlinedTerm definition="Shared office spaces for entrepreneurs. We're not about desks and coffee. We're about the spark before you even have an idea">co-working</UnderlinedTerm> or <UnderlinedTerm definition="Guidance from experienced professionals. We're not about advice from people who made it. We're about the energy of people trying to make it">mentorship</UnderlinedTerm>. It's the <UnderlinedTerm definition="The initial moment of inspiration before action. Like when Zuckerberg saw the Harvard face book and thought 'I can build this better'">spark</UnderlinedTerm> before the fire. The space before you call yourself a <UnderlinedTerm definition="Someone who creates and builds things. Not someone with a business card, but someone who can't stop thinking about their next project">builder</UnderlinedTerm>. We exist for the <UnderlinedTerm definition="People who want to learn and explore. The ones who read about new technologies and think 'what if I built something with this?'">curious</UnderlinedTerm> and <UnderlinedTerm definition="People who can't sit still, always seeking more. The ones who see a problem and immediately think 'I could fix that'">restless</UnderlinedTerm> — the ones who know there's more than just a <UnderlinedTerm definition="Job offer after graduation. We're not against good jobs. We're for the people who know they want to build their own thing">return offer</UnderlinedTerm>.
+                    This isn&apos;t <UnderlinedTerm definition="Shared office spaces for entrepreneurs. We&apos;re not about desks and coffee. We&apos;re about the spark before you even have an idea">co-working</UnderlinedTerm> or <UnderlinedTerm definition="Guidance from experienced professionals. We&apos;re not about advice from people who made it. We&apos;re about the energy of people trying to make it">mentorship</UnderlinedTerm>. It&apos;s the <UnderlinedTerm definition="The initial moment of inspiration before action. Like when Zuckerberg saw the Harvard face book and thought &apos;I can build this better&apos;">spark</UnderlinedTerm> before the fire. The space before you call yourself a <UnderlinedTerm definition="Someone who creates and builds things. Not someone with a business card, but someone who can&apos;t stop thinking about their next project">builder</UnderlinedTerm>. We exist for the <UnderlinedTerm definition="People who want to learn and explore. The ones who read about new technologies and think &apos;what if I built something with this?&apos;">curious</UnderlinedTerm> and <UnderlinedTerm definition="People who can&apos;t sit still, always seeking more. The ones who see a problem and immediately think &apos;I could fix that&apos;">restless</UnderlinedTerm> — the ones who know there&apos;s more than just a <UnderlinedTerm definition="Job offer after graduation. We&apos;re not against good jobs. We&apos;re for the people who know they want to build their own thing">return offer</UnderlinedTerm>.
                   </p>
                 </div>
               </div>
