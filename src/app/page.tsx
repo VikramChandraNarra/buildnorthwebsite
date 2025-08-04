@@ -193,7 +193,7 @@ export default function Home() {
                         {/* Back of card */}
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 backdrop-blur-sm rounded-xl p-6 border border-blue-400/30 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
                           <h4 className="text-lg font-bold text-white mb-4">Fun Fact</h4>
-                          <p className="text-white/90 text-sm leading-relaxed">Dropbox's founder Drew Houston got rejected by YC twice. On his third try, he demoed live and got in. Each failure made him better.</p>
+                          <p className="text-white/90 text-sm leading-relaxed">Dropbox&apos;s founder Drew Houston got rejected by YC twice. On his third try, he demoed live and got in. Each failure made him better.</p>
                         </div>
                       </div>
                     </div>
@@ -208,7 +208,7 @@ export default function Home() {
                         {/* Back of card */}
                         <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 backdrop-blur-sm rounded-xl p-6 border border-green-400/30 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
                           <h4 className="text-lg font-bold text-white mb-4">Fun Fact</h4>
-                          <p className="text-white/90 text-sm leading-relaxed">Airbnb's founders started by renting out air mattresses in their apartment. They didn't call themselves 'founders' - they were just solving a problem.</p>
+                          <p className="text-white/90 text-sm leading-relaxed">Airbnb&apos;s founders started by renting out air mattresses in their apartment. They didn&apos;t call themselves &apos;founders&apos; - they were just solving a problem.</p>
                         </div>
                       </div>
                     </div>
@@ -282,7 +282,7 @@ export default function Home() {
               </p>
               
               <p className="text-xl md:text-2xl text-white/80 font-medium">
-                We're here to build that future. Are you in?
+                We&apos;re here to build that future. Are you in?
               </p>
             </div>
             
