@@ -1,7 +1,77 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
+// Tooltip component for hover definitions
+const Tooltip = ({ children, definition, isVisible, position }: { 
+  children: React.ReactNode; 
+  definition: string; 
+  isVisible: boolean; 
+  position: { x: number; y: number; }
+}) => {
+  if (!isVisible) return null;
+  
+  const tooltipContent = (
+    <div 
+      className="fixed z-50 bg-black/90 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-xs text-white text-sm shadow-2xl"
+      style={{ 
+        left: position.x + 10, 
+        top: position.y - 10,
+        pointerEvents: 'none'
+      }}
+    >
+      {definition}
+    </div>
+  );
+
+  // Use portal to render tooltip outside the paragraph structure
+  return createPortal(tooltipContent, document.body);
+};
+
+// Underlined term component
+const UnderlinedTerm = ({ children, definition }: { children: React.ReactNode; definition: string }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    setPosition({ 
+      x: e.clientX, 
+      y: e.clientY 
+    });
+    setIsVisible(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setPosition({ 
+      x: e.clientX, 
+      y: e.clientY 
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setIsVisible(false);
+  };
+
+  return (
+    <>
+      <span 
+        className="underline decoration-yellow-400 decoration-2 underline-offset-4 cursor-pointer hover:decoration-yellow-300 transition-all duration-200"
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {children}
+      </span>
+      <Tooltip 
+        definition={definition} 
+        isVisible={isVisible} 
+        position={position}
+      />
+    </>
+  );
+};
 
 export default function Home() {
   useEffect(() => {
@@ -63,8 +133,6 @@ export default function Home() {
             </span>
           </h1>
 
-
-
           {/* Floating Elements for Cinematic Effect */}
           <div className="absolute top-20 left-10 w-2 h-2 bg-white/60 rounded-full animate-float animate-glow"></div>
           <div className="absolute top-40 right-20 w-1 h-1 bg-blue-400/80 rounded-full animate-float animate-glow" style={{animationDelay: '1s'}}></div>
@@ -72,256 +140,137 @@ export default function Home() {
           <div className="absolute bottom-20 right-10 w-1 h-1 bg-orange-400/80 rounded-full animate-float animate-glow" style={{animationDelay: '1.5s'}}></div>
         </section>
 
-        {/* The Problem Section */}
+        {/* The Letter Section */}
         <section className="min-h-screen flex items-center justify-center px-4 py-20">
-                      <div className="max-w-6xl mx-auto text-center">
-                          <h2 className="text-4xl md:text-6xl font-black text-white mb-16 drop-shadow-2xl">
-              Canada Has <span className="text-white">Incredible Talent</span>
-            </h2>
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-12 border border-white/20">
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-12 text-center drop-shadow-2xl">
+                Why Buildnorth Exists
+              </h2>
               
-              <div className="grid md:grid-cols-2 gap-16 mt-16">
-                <div className="text-left">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">The Talent</h3>
-                  <ul className="space-y-6 text-white/90 text-lg leading-relaxed">
-                    <li className="flex items-start">
-                      <span className="text-yellow-400 mr-4 mt-1 text-xl">⭐</span>
-                      <span>Waterloo has the <strong>largest co-op program</strong> in the world</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-400 mr-4 mt-1 text-xl">⭐</span>
-                      <span><strong>Geoffrey Hinton</strong> and his students changed AI with AlexNet</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-400 mr-4 mt-1 text-xl">⭐</span>
-                      <span><strong>Ilya Sutskever</strong> and <strong>Andrej Karpathy</strong> co-founded OpenAI</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-yellow-400 mr-4 mt-1 text-xl">⭐</span>
-                      <div>
-                        <span>Multiple <strong>startups by Canadian students</strong> backed by</span>
-                        <div className="inline-flex items-center gap-3 ml-3 mt-2">
-                          {/* Y Combinator */}
-                          <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full">
-                            <span className="text-white font-bold text-xs">Y</span>
-                          </div>
-                          {/* Sequoia */}
-                          <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full">
-                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                            </svg>
-                          </div>
-                          {/* Andreessen Horowitz */}
-                          <div className="flex items-center justify-center w-8 h-8 bg-white/10 rounded-full">
-                            <span className="text-white font-bold text-xs">a16z</span>
-                          </div>
+              <div className="space-y-8 text-white/95 text-lg md:text-xl leading-relaxed">
+                <p>
+                  What happens when you land in <UnderlinedTerm definition="The epicenter of tech innovation, where ambitious students feel they can build the next big thing. Home to Y Combinator, where Dropbox, Airbnb, and Stripe got their start">San Francisco</UnderlinedTerm>?
+                </p>
+                <p>
+                  You feel limitless. Like you could build the next <UnderlinedTerm definition="Founded by Ilya Sutskever (UofT grad) and Sam Altman. Their breakthrough came from a 2017 paper published at UofT that introduced the transformer architecture">OpenAI</UnderlinedTerm>, <UnderlinedTerm definition="Started by Jeff Bezos in his garage. Now worth $1.7T. Shows how a simple idea can become a global empire">Amazon</UnderlinedTerm>, or <UnderlinedTerm definition="Founded by Larry Page and Sergey Brin at Stanford. Their first office was a garage. Now they're building AI that can reason like humans">Google</UnderlinedTerm> — even as a student. That feeling changes everything.
+                </p>
+                <p>
+                  We want to bring that feeling to <UnderlinedTerm definition="Home to Geoffrey Hinton (UofT), who pioneered deep learning. Waterloo has the world's largest co-op program. Canadian students have built companies like Opennote (YC-backed)">Canada</UnderlinedTerm>.
+                </p>
+                
+                <div className="mt-12">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Mission</h3>
+                  <p>
+                    To give Canadian students <UnderlinedTerm definition="The cultural freedom to try, fail, and build without fear of judgment. In SF, failure is celebrated as learning. In Canada, we're taught to play it safe">cultural permission</UnderlinedTerm> to build.
+                  </p>
+                  <p>
+                    To make building feel <UnderlinedTerm definition="Creating something new and meaningful. The rush of shipping your first feature and seeing users actually use it">exciting</UnderlinedTerm>, <UnderlinedTerm definition="Respected and admired by peers. In SF, being a founder is cool. In Canada, we're taught to be humble">high-status</UnderlinedTerm>, and <UnderlinedTerm definition="Spreads from person to person like a positive virus. When you see your friends building, you want to build too">contagious</UnderlinedTerm>. We believe in:
+                  </p>
+                  
+                  <div className="grid md:grid-cols-3 gap-8 mt-8">
+                    <div className="group perspective">
+                      <div className="relative w-full h-48 transition-all duration-700 transform-style-preserve-3d group-hover:rotate-y-180 group-hover:scale-110 group-hover:h-56">
+                        {/* Front of card */}
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 backface-hidden flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Social proof</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">Everyone around you is building. You want to join.</p>
+                        </div>
+                        {/* Back of card */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 backdrop-blur-sm rounded-xl p-6 border border-yellow-400/30 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Fun Fact</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">In 2004, when Facebook launched at Harvard, 1,200 students joined in 24 hours. When your friends are doing something cool, you want in too.</p>
                         </div>
                       </div>
-                    </li>
-                  </ul>
+                    </div>
+                    
+                    <div className="group perspective">
+                      <div className="relative w-full h-48 transition-all duration-700 transform-style-preserve-3d group-hover:rotate-y-180 group-hover:scale-110 group-hover:h-56">
+                        {/* Front of card */}
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 backface-hidden flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Status loops</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">You build, people notice, momentum builds.</p>
+                        </div>
+                        {/* Back of card */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 backdrop-blur-sm rounded-xl p-6 border border-blue-400/30 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Fun Fact</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">Dropbox's founder Drew Houston got rejected by YC twice. On his third try, he demoed live and got in. Each failure made him better.</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="group perspective">
+                      <div className="relative w-full h-48 transition-all duration-700 transform-style-preserve-3d group-hover:rotate-y-180 group-hover:scale-110 group-hover:h-56">
+                        {/* Front of card */}
+                        <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 backface-hidden flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Identity rewards</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">You begin to see yourself as a builder.</p>
+                        </div>
+                        {/* Back of card */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-teal-400/20 backdrop-blur-sm rounded-xl p-6 border border-green-400/30 backface-hidden rotate-y-180 flex flex-col justify-center items-center text-center">
+                          <h4 className="text-lg font-bold text-white mb-4">Fun Fact</h4>
+                          <p className="text-white/90 text-sm leading-relaxed">Airbnb's founders started by renting out air mattresses in their apartment. They didn't call themselves 'founders' - they were just solving a problem.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="text-left">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">The Problem</h3>
-                  <ul className="space-y-6 text-white/90 text-lg leading-relaxed">
-                    <li className="flex items-start">
-                      <span className="text-red-400 mr-4 mt-1 text-xl">⚠️</span>
-                      <span>We <strong>only</strong> grind for internships and return offers</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-red-400 mr-4 mt-1 text-xl">⚠️</span>
-                      <span>We are afraid of <strong>failure</strong></span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-red-400 mr-4 mt-1 text-xl">⚠️</span>
-                      <span><strong>Investors</strong> are too cautious with young founders</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-red-400 mr-4 mt-1 text-xl">⚠️</span>
-                      <span>Culture is too <strong>risk-averse</strong></span>
-                    </li>
-                  </ul>
+                <div className="mt-12">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">The Vision</h3>
+                  <p>
+                    We imagine a Canada where:
+                  </p>
+                  
+                  <div className="space-y-4 mt-6">
+                    <div className="flex items-start">
+                      <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
+                      <p>It's normal to say, "I'm building the next <UnderlinedTerm definition="Founded by Tobi Lütke in Ottawa. Started as a snowboard shop website. Now worth $100B+. Shows Canadian founders can build global companies">Shopify</UnderlinedTerm>."</p>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
+                      <p>Students take <UnderlinedTerm definition="Trying new things even when they might fail. Like when Instagram started as a location check-in app before pivoting to photos">risks</UnderlinedTerm> and <UnderlinedTerm definition="Releasing products quickly, even if imperfect. Twitter was built in 2 weeks. WhatsApp was built by 2 people">ship fast</UnderlinedTerm>.</p>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
+                      <p><UnderlinedTerm definition="When things don't work out as planned. Instagram's founders had 14 failed apps before Instagram. Failure is just iteration">Failure</UnderlinedTerm> is something to laugh about, not hide.</p>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="text-yellow-400 mr-4 mt-2 text-xl">•</span>
+                      <p><UnderlinedTerm definition="Someone who creates and builds things. Like the students who built Facebook in their dorm room, or the team that built Instagram in 8 weeks">Building</UnderlinedTerm> is a <UnderlinedTerm definition="How you see yourself and how others see you. In SF, 'I'm building something' is a normal answer to 'what do you do?'">social identity</UnderlinedTerm>, not a job title.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-12">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">This Isn't a Club</h3>
+                  <p>
+                    This isn't <UnderlinedTerm definition="Shared office spaces for entrepreneurs. We're not about desks and coffee. We're about the spark before you even have an idea">co-working</UnderlinedTerm> or <UnderlinedTerm definition="Guidance from experienced professionals. We're not about advice from people who made it. We're about the energy of people trying to make it">mentorship</UnderlinedTerm>. It's the <UnderlinedTerm definition="The initial moment of inspiration before action. Like when Zuckerberg saw the Harvard face book and thought 'I can build this better'">spark</UnderlinedTerm> before the fire. The space before you call yourself a <UnderlinedTerm definition="Someone who creates and builds things. Not someone with a business card, but someone who can't stop thinking about their next project">builder</UnderlinedTerm>. We exist for the <UnderlinedTerm definition="People who want to learn and explore. The ones who read about new technologies and think 'what if I built something with this?'">curious</UnderlinedTerm> and <UnderlinedTerm definition="People who can't sit still, always seeking more. The ones who see a problem and immediately think 'I could fix that'">restless</UnderlinedTerm> — the ones who know there's more than just a <UnderlinedTerm definition="Job offer after graduation. We're not against good jobs. We're for the people who know they want to build their own thing">return offer</UnderlinedTerm>.
+                  </p>
                 </div>
               </div>
-            </div>
-        </section>
-
-        {/* The Vision Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-black/30 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-12 drop-shadow-2xl">
-              What If We Had <span className="text-white">Permission to Build</span>?
-            </h2>
-            
-            <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light leading-relaxed mb-16">
-              Could we see the next <strong>Shopify</strong> emerging again in Canada?
-            </p>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-10 border border-white/20">
-              <p className="text-lg md:text-xl text-white/95 leading-relaxed">
-                In <strong>San Francisco</strong>, shipping early, embracing failure, and loud ambition for students is <strong>celebrated</strong>.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Our Values Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20">
-                      <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-20 drop-shadow-2xl">
-                Our <span className="text-white">Values</span>
-              </h2>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[
-                {
-                  title: "Loud Ambition",
-                  description: "It's okay to say 'I want to build the next Shopify'",
-                  icon: (
-                    <svg className="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Ship Fast",
-                  description: "Reward momentum and speed > polish",
-                  icon: (
-                    <svg className="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Permission to Fail",
-                  description: "Actively reward attempts, not just outcomes",
-                  icon: (
-                    <svg className="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Imperfect Demos",
-                  description: "Celebrate rough, live, unfinished stuff",
-                  icon: (
-                    <svg className="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Risk-taking as Identity",
-                  description: "It's cool to try hard things",
-                  icon: (
-                    <svg className="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Velocity > Prestige",
-                  description: "We care what you ship, not where you went to school",
-                  icon: (
-                    <svg className="w-12 h-12 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                  )
-                }
-              ].map((value, index) => (
-                <div key={index} className="group bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                  <div className="mb-6">{value.icon}</div>
-                  <h3 className="text-xl font-bold text-white mb-4">{value.title}</h3>
-                  <p className="text-white/90 leading-relaxed text-base">{value.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Initiatives Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 bg-black/30 backdrop-blur-sm">
-                      <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-black text-white text-center mb-20 drop-shadow-2xl">
-                Our <span className="text-white">Initiatives</span>
-              </h2>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[
-                {
-                  title: "Launch Sundays",
-                  description: "Live, messy, raw demo events to normalize imperfections and progress",
-                  icon: (
-                    <svg className="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Ship Club",
-                  description: "A micro group of students pushing each other to ship weekly",
-                  icon: (
-                    <svg className="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Risk Grants",
-                  description: "$200 — $1k for 'might fail but trying anyway' ideas",
-                  icon: (
-                    <svg className="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  )
-                },
-                {
-                  title: '"Flopped" Wall',
-                  description: "Digital feed of 'flopped' projects - making risk visible & funny",
-                  icon: (
-                    <svg className="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12H5a2 2 0 01-2-2V6a2 2 0 012-2h4m0 0h8a2 2 0 012 2v4a2 2 0 01-2 2h-8m0 0v4a2 2 0 002 2h4a2 2 0 002-2v-4m0 0h4" />
-                    </svg>
-                  )
-                },
-                {
-                  title: "Builder Quests",
-                  description: "Weekly 'can you build this' challenges, like bounties but cooler",
-                  icon: (
-                    <svg className="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  )
-                }
-              ].map((initiative, index) => (
-                <div key={index} className="group bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 hover-lift">
-                  <div className="mb-6">{initiative.icon}</div>
-                  <h3 className="text-xl font-bold text-white mb-4">{initiative.title}</h3>
-                  <p className="text-white/90 leading-relaxed text-base">{initiative.description}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
 
         {/* Join the Movement Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden">
-                      {/* Animated Background Elements */}
-            <div className="absolute inset-0">
-              <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-20 right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-            </div>
-          
+        <section className="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden bg-black/30 backdrop-blur-sm">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-white/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+          </div>
+        
           <div className="max-w-5xl mx-auto text-center relative z-10">
             {/* Main Title with Enhanced Styling */}
             <div className="mb-16">
-                          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none">
-              Join the{" "}
-              <span className="text-white animate-pulse">
-                Movement
-              </span>
-            </h2>
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none">
+                Join the{" "}
+                <span className="text-white animate-pulse">
+                  Movement
+                </span>
+              </h2>
               
               {/* Animated Underline */}
               <div className="w-32 h-1 bg-white mx-auto rounded-full animate-pulse"></div>
@@ -330,18 +279,11 @@ export default function Home() {
             {/* Enhanced Subtitle */}
             <div className="mb-16">
               <p className="text-2xl md:text-3xl lg:text-4xl text-white/95 font-light leading-relaxed mb-8">
-                Canada can become the{" "}
-                <span className="font-bold text-white">
-                  best place in the world
-                </span>{" "}
-                to be a young builder.
+                Canada can be the best place to be a young <UnderlinedTerm definition="Someone who creates and builds things">builder</UnderlinedTerm>. Not just to get a job, but to create something real.
               </p>
               
               <p className="text-xl md:text-2xl text-white/80 font-medium">
-                The question is,{" "}
-                <span className="text-white font-bold">
-                  will you be a part of this change?
-                </span>
+                We're here to build that future. Are you in?
               </p>
             </div>
             
@@ -349,14 +291,9 @@ export default function Home() {
             <div className="max-w-xl mx-auto mb-12">
               <div className="relative group">
                 <div className="absolute inset-0 bg-white/10 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative flex gap-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-full p-2">
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email to join the waitlist"
-                    className="flex-1 px-6 py-4 bg-transparent border-none text-white placeholder-white/60 font-medium text-lg transition-all duration-300 focus:outline-none"
-                  />
-                  <button className="px-8 py-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:scale-105 hover:bg-white/30 hover:shadow-lg hover:shadow-white/20 flex items-center gap-2 whitespace-nowrap">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="relative flex justify-center">
+                  <button className="px-12 py-6 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white font-semibold text-xl transition-all duration-300 hover:scale-105 hover:bg-white/30 hover:shadow-lg hover:shadow-white/20 flex items-center gap-3 whitespace-nowrap">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                     Join Waitlist
