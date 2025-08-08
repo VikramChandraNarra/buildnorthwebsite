@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 
 // Tooltip component for hover definitions
@@ -72,7 +72,164 @@ const UnderlinedTerm = ({ children, definition }: { children: React.ReactNode; d
   );
 };
 
+// Subtle starfield canvas background
+const Starfield = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const animationRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    type Star = { x: number; y: number; z: number; size: number; speed: number; }; 
+    const numStars = Math.min(180, Math.floor((width * height) / 12000));
+    const stars: Star[] = Array.from({ length: numStars }).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      z: Math.random() * 1 + 0.5,
+      size: Math.random() * 1.8 + 0.2,
+      speed: Math.random() * 0.3 + 0.05,
+    }));
+
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+      // soft vignette
+      const gradient = context.createRadialGradient(width/2, height/2, Math.min(width, height)/6, width/2, height/2, Math.max(width, height)/1.2);
+      gradient.addColorStop(0, 'rgba(255,255,255,0.02)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0.35)');
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, width, height);
+
+      stars.forEach((star) => {
+        star.y += star.speed * star.z;
+        if (star.y > height + 2) {
+          star.y = -2;
+          star.x = Math.random() * width;
+        }
+        const alpha = 0.5 + star.z * 0.5;
+        context.beginPath();
+        context.arc(star.x, star.y, star.size * star.z, 0, Math.PI * 2);
+        context.fillStyle = `rgba(255,255,255,${alpha})`;
+        context.fill();
+      });
+
+      animationRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-60" />;
+};
+
+// Magnetic button container for subtle parallax toward cursor
+const Magnetic: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const strength = 16;
+  const resetTimeout = useRef<number | null>(null);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const relX = e.clientX - rect.left - rect.width / 2;
+    const relY = e.clientY - rect.top - rect.height / 2;
+    const moveX = (relX / rect.width) * strength;
+    const moveY = (relY / rect.height) * strength;
+    el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+    if (resetTimeout.current) window.clearTimeout(resetTimeout.current);
+  };
+
+  const handleMouseLeave = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.transform = `translate3d(0,0,0)`;
+  };
+
+  return (
+    <div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="transition-transform duration-150 ease-out">
+      {children}
+    </div>
+  );
+};
+
+// Waitlist modal with form
+const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [university, setUniversity] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative z-[61] w-full max-w-lg mx-4 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 sm:p-8 text-white shadow-2xl with-shine tilt-hover">
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-gradient-to-br from-pink-500/20 to-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
+        <h3 className="text-2xl sm:text-3xl font-black mb-2 chromatic-text">Join the Waitlist</h3>
+        <p className="text-white/80 mb-6">Be first to access cohorts, events, and founder-only resources.</p>
+        {submitted ? (
+          <div className="text-center py-8">
+            <p className="text-xl font-semibold mb-2">You&apos;re in!</p>
+            <p className="text-white/70">We&apos;ll reach out soon. Meanwhile, keep building.</p>
+            <button onClick={onClose} className="mt-6 px-6 py-3 rounded-full bg-white/20 border border-white/30 hover:bg-white/30 transition">Close</button>
+          </div>
+        ) : (
+          <form
+            className="grid gap-4"
+            onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+          >
+            <div>
+              <label className="block text-sm mb-1 text-white/80">Name</label>
+              <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="Zoe Builder" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
+            </div>
+            <div>
+              <label className="block text-sm mb-1 text-white/80">Email</label>
+              <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="zoe@university.ca" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
+            </div>
+            <div>
+              <label className="block text-sm mb-1 text-white/80">University (optional)</label>
+              <input value={university} onChange={(e) => setUniversity(e.target.value)} placeholder="Waterloo" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
+            </div>
+            <Magnetic>
+              <button type="submit" className="mt-2 w-full px-8 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-extrabold text-lg shadow-[0_10px_40px_rgba(255,200,80,0.35)] hover:shadow-[0_14px_50px_rgba(255,200,80,0.5)] transition with-shine">
+                Claim Your Spot
+              </button>
+            </Magnetic>
+          </form>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+};
+
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -108,6 +265,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/50"></div>
         {/* Additional blur overlay for content sections */}
         <div className="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 transition-opacity duration-500" id="background-blur"></div>
+        {/* Surreal layers */}
+        <Starfield />
+        <div className="aurora-layer" />
+        <div className="noise-overlay" />
       </div>
 
       {/* Scrolling Content */}
@@ -123,7 +284,7 @@ export default function Home() {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-black text-white/70 mb-8 tracking-tight leading-none drop-shadow-2xl text-center">
+          <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-black text-white/70 mb-8 tracking-tight leading-none drop-shadow-2xl text-center chromatic-text">
             <span className="block transform transition-all duration-700 hover:scale-105 hover:text-transparent hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-600 hover:bg-clip-text hover:drop-shadow-none">
               BUILD
             </span>
@@ -131,6 +292,15 @@ export default function Home() {
               NORTH
             </span>
           </h1>
+
+          {/* Primary CTA below title */}
+          <div className="mt-2">
+            <Magnetic>
+              <button onClick={() => setIsModalOpen(true)} className="px-10 py-5 rounded-full bg-gradient-to-r from-white to-white/80 text-black font-extrabold text-lg tracking-tight border border-white/50 shadow-[0_20px_80px_rgba(255,255,255,0.25)] hover:shadow-[0_24px_90px_rgba(255,255,255,0.35)] transition with-shine tilt-hover">
+                Join the Waitlist
+              </button>
+            </Magnetic>
+          </div>
 
           {/* Floating Elements for Cinematic Effect */}
           <div className="absolute top-20 left-10 w-2 h-2 bg-white/60 rounded-full animate-float animate-glow"></div>
@@ -151,9 +321,9 @@ export default function Home() {
                 <p>
                   What happens when you land in <UnderlinedTerm definition="The epicenter of tech innovation, where ambitious students feel they can build the next big thing. Home to Y Combinator, where Dropbox, Airbnb, and Stripe got their start">San Francisco</UnderlinedTerm>?
                 </p>
-                                  <p>
-                    You feel limitless. Like you could build the next <UnderlinedTerm definition="Founded by Ilya Sutskever (UofT grad) and Sam Altman. Their breakthrough came from a 2017 paper published at UofT that introduced the transformer architecture">OpenAI</UnderlinedTerm>, <UnderlinedTerm definition="Started by Jeff Bezos in his garage. Now worth $1.7T. Shows how a simple idea can become a global empire">Amazon</UnderlinedTerm>, or <UnderlinedTerm definition="Founded by Larry Page and Sergey Brin at Stanford. Their first office was a garage. Now they&apos;re building AI that can reason like humans">Google</UnderlinedTerm> — even as a student. That feeling changes everything.
-                  </p>
+                                <p>
+                  You feel limitless. Like you could build the next <UnderlinedTerm definition="Founded by Ilya Sutskever (UofT grad) and Sam Altman. Their breakthrough came from a 2017 paper published at UofT that introduced the transformer architecture">OpenAI</UnderlinedTerm>, <UnderlinedTerm definition="Started by Jeff Bezos in his garage. Now worth $1.7T. Shows how a simple idea can become a global empire">Amazon</UnderlinedTerm>, or <UnderlinedTerm definition="Founded by Larry Page and Sergey Brin at Stanford. Their first office was a garage. Now they&apos;re building AI that can reason like humans">Google</UnderlinedTerm> — even as a student. That feeling changes everything.
+                </p>
                 <p>
                   We want to bring that feeling to <UnderlinedTerm definition="Home to Geoffrey Hinton (UofT), who pioneered deep learning. Waterloo has the world's largest co-op program. Canadian students have built companies like Opennote (YC-backed)">Canada</UnderlinedTerm>.
                 </p>
@@ -264,7 +434,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto text-center relative z-10">
             {/* Main Title with Enhanced Styling */}
             <div className="mb-16">
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 drop-shadow-2xl leading-none chromatic-text">
                 Join the{" "}
                 <span className="text-white animate-pulse">
                   Movement
@@ -286,17 +456,21 @@ export default function Home() {
               </p>
             </div>
             
-            {/* Enhanced Waitlist Form */}
+            {/* Enhanced Waitlist CTA */}
             <div className="max-w-xl mx-auto mb-12">
               <div className="relative group">
                 <div className="absolute inset-0 bg-white/10 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative flex justify-center">
-                  <button className="px-12 py-6 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-white font-semibold text-xl transition-all duration-300 hover:scale-105 hover:bg-white/30 hover:shadow-lg hover:shadow-white/20 flex items-center gap-3 whitespace-nowrap">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                    Join Waitlist
-                  </button>
+                  <Magnetic>
+                    <button onClick={() => setIsModalOpen(true)} className="px-12 py-6 bg-white text-black font-extrabold text-xl rounded-full border border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_80px_rgba(255,255,255,0.35)] with-shine">
+                      <span className="inline-flex items-center gap-3 whitespace-nowrap">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                        Join Waitlist Now
+                      </span>
+                    </button>
+                  </Magnetic>
                 </div>
               </div>
               
@@ -329,6 +503,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Modal mount */}
+      <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
