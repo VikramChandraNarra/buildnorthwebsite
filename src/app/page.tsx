@@ -171,60 +171,16 @@ const Magnetic: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 // Waitlist modal with form
 const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [university, setUniversity] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
+    if (isOpen) {
+      // Redirect to Google Form
+      window.open('https://forms.gle/bPHo9h9KCe3DaBGT9', '_blank');
+      onClose(); // Close modal immediately after opening form
+    }
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
-  return createPortal(
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-[61] w-full max-w-lg mx-4 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-6 sm:p-8 text-white shadow-2xl with-shine tilt-hover">
-        <div className="absolute -top-24 -right-24 w-72 h-72 bg-gradient-to-br from-pink-500/20 to-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
-        <h3 className="text-2xl sm:text-3xl font-black mb-2 chromatic-text">Join the Waitlist</h3>
-        <p className="text-white/80 mb-6">Be first to access cohorts, events, and founder-only resources.</p>
-        {submitted ? (
-          <div className="text-center py-8">
-            <p className="text-xl font-semibold mb-2">You&apos;re in!</p>
-            <p className="text-white/70">We&apos;ll reach out soon. Meanwhile, keep building.</p>
-            <button onClick={onClose} className="mt-6 px-6 py-3 rounded-full bg-white/20 border border-white/30 hover:bg-white/30 transition">Close</button>
-          </div>
-        ) : (
-          <form
-            className="grid gap-4"
-            onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-          >
-            <div>
-              <label className="block text-sm mb-1 text-white/80">Name</label>
-              <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="Zoe Builder" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
-            </div>
-            <div>
-              <label className="block text-sm mb-1 text-white/80">Email</label>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="zoe@university.ca" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
-            </div>
-            <div>
-              <label className="block text-sm mb-1 text-white/80">University (optional)</label>
-              <input value={university} onChange={(e) => setUniversity(e.target.value)} placeholder="Waterloo" className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-white/40 placeholder:text-white/40" />
-            </div>
-            <Magnetic>
-              <button type="submit" className="mt-2 w-full px-8 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-extrabold text-lg shadow-[0_10px_40px_rgba(255,200,80,0.35)] hover:shadow-[0_14px_50px_rgba(255,200,80,0.5)] transition with-shine">
-                Claim Your Spot
-              </button>
-            </Magnetic>
-          </form>
-        )}
-      </div>
-    </div>,
-    document.body
-  );
+  // This component no longer renders anything visible
+  return null;
 };
 
 export default function Home() {
@@ -297,9 +253,12 @@ export default function Home() {
           <div className="mt-2">
             <Magnetic>
               <button onClick={() => setIsModalOpen(true)} className="px-10 py-5 rounded-full bg-gradient-to-r from-white to-white/80 text-black font-extrabold text-lg tracking-tight border border-white/50 shadow-[0_20px_80px_rgba(255,255,255,0.25)] hover:shadow-[0_24px_90px_rgba(255,255,255,0.35)] transition with-shine tilt-hover">
-                Join the Waitlist
+                Apply to Waitlist →
               </button>
             </Magnetic>
+            <p className="text-white/60 text-sm mt-4 text-center">
+              Opens Google Form in new tab
+            </p>
           </div>
 
           {/* Floating Elements for Cinematic Effect */}
@@ -467,7 +426,7 @@ export default function Home() {
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
-                        Join Waitlist Now
+                        Apply to Waitlist →
                       </span>
                     </button>
                   </Magnetic>
