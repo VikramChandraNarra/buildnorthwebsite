@@ -185,6 +185,7 @@ const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -200,6 +201,13 @@ export default function Home() {
         } else {
           blurElement.style.opacity = '0';
         }
+      }
+
+      // Hide scroll indicator after scrolling down a bit
+      if (scrollY > windowHeight * 0.3) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
       }
     };
 
@@ -453,14 +461,16 @@ export default function Home() {
         </section>
 
         {/* Scroll Indicator */}
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="flex flex-col items-center text-white/60">
-            <span className="text-sm font-light mb-2">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce"></div>
+        {showScrollIndicator && (
+          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-10 transition-opacity duration-500">
+            <div className="flex flex-col items-center text-white/60">
+              <span className="text-sm font-light mb-2">Scroll to explore</span>
+              <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+                <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce"></div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       {/* Modal mount */}
       <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
