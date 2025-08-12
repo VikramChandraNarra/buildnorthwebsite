@@ -174,7 +174,7 @@ const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   useEffect(() => {
     if (isOpen) {
       // Redirect to Google Form
-      window.open('https://forms.gle/bPHo9h9KCe3DaBGT9', '_blank');
+      window.open('https://forms.gle/E34PFW3och8nVHZAA', '_blank');
       onClose(); // Close modal immediately after opening form
     }
   }, [isOpen, onClose]);
